@@ -9,6 +9,7 @@
  * @param {DataView} file 
  * @param {number} i Cursor for finding the current offset 
  * @param {Array} children All the atoms in an Array Object
+ */
 function reader(file, i = 0, children = []){
   const data = {children : []}
   data['size'] = file.getUint32(i)
@@ -17,8 +18,10 @@ function reader(file, i = 0, children = []){
   data['end'] = i + data['size']
   
   switch(name){
-    case 'dref' : case 'stsd' : i+= 4 // Atom contains additional 4 byte which returns the length of entries
-    case 'meta' : i+= 4 // Atom contains version and flag 
+    // Atom contains additional 4 byte which returns the length of entries
+    case 'dref' : case 'stsd' : i+= 4 
+    // Atom contains version and flag 
+    case 'meta' : i+= 4 
     case 'moov' : 
     case 'trak' : 
     case 'edts' : 
