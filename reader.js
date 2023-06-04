@@ -2,6 +2,7 @@
  * MP4 reader 
  * 
  * Read the atom structure of MP4 and return all known atom positions in a form of array. 
+ * NOTE: Not effective for some atoms that have no size.
  */
 
 /**
