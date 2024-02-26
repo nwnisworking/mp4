@@ -185,7 +185,7 @@ export default class Box{
         default : 
           if(c instanceof ArrayBuffer || ArrayBuffer.isView(c))
             _.push(new Uint8Array(c))
-          else
+          else{
             for(let i of c){
               if(typeof i !== 'object'){
                 _.push(Uint8Array.from(num2buf(i, v)))
@@ -198,6 +198,8 @@ export default class Box{
                 }
               }
             }
+          }
+
         break
       }
     }

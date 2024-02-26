@@ -26,8 +26,11 @@ export default class Uint{
     let i = 0
 
     for(let u of this.data){
-      _.set(u, i)
-      i+=u.byteLength
+      try{
+        _.set(u, i)
+        i+=u.byteLength
+      }
+      catch(e){}      
     }
 
     return _

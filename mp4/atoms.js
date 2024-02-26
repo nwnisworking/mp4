@@ -632,24 +632,6 @@ _.tfra = class extends FullBox{
     Map.u32('entry_count'),
     Map.str('data')
   )
-
-  // parse(){
-  //   super.parse()
-  //   this.dv.offset-= this.data.length
-
-  //   const len_size_traf_num = ((this.length_size >> 4 & 0x3) + 1) * 8
-  //   const len_size_trun_num = ((this.length_size >> 2 & 0x3) + 1) * 8
-  //   const len_size_sample_num = ((this.length_size & 0x3) + 1) * 8
-  //   for(let i = 0; i < this.entry_count; i++){
-  //     this.entries.push({
-  //       time : this.version ? this.dv.getU64() : this.dv.getU32(),
-  //       moof_offset : this.version ? this.dv.getU64() : this.dv.getU32(),
-  //       traf_num : this.dv['getU' + len_size_traf_num](),
-  //       trun_num : this.dv['getU' + len_size_trun_num](),
-  //       sample_num : this.dv['getU' + len_size_sample_num]()
-  //     })
-  //   }
-  // }
 }
 
 _.mfro = class extends FullBox{
@@ -700,18 +682,7 @@ _.moov = class extends Box{
       tkhd.duration = 
       stts.entry_count = 0
 
-      // if(ctts){
-      //   ctts.entries = []
-      //   ctts.entry_count = 0
-      // }
-
-      // if(stss){
-      //   stss.entries = []
-      //   stss.entry_count = 0
-      // }
-      
       stbl.items = stbl.items.filter(e=>!['ctts', 'stss'].includes(e.name))
-
     })
 
     return moov
@@ -770,7 +741,8 @@ _.trak = class extends Box{
       size : stts.sample_count,
       duration : stts.sample_count * stts.sample_delta,
       time_scale : mdhd.time_scale,
-      id : this.get('tkhd').track_id
+      id : this.get('tkhd').track_id,
+      type : this.get('hdlr').handler_type
     }
 
     for(let i = 0, sc = 0, sz = 0, ct = 0, cti = 0; i < stco.length; i++){
@@ -804,6 +776,7 @@ _.trak = class extends Box{
         }
         else{
           _.time = (meta.samples.length * meta.delta - meta.delta) / meta.time_scale
+
         }
 
         if(stss){
@@ -811,6 +784,7 @@ _.trak = class extends Box{
         }
 
         meta.samples.push(_)
+
       })
     }
 
